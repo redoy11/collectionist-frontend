@@ -13,3 +13,10 @@ export const LOCAL_AUTHORIZE_ENDPOINT = `/${LOCAL_SECRET_KEY}/authorize`;
 
 /** local home page */
 export const LOCAL_HOME_ENDPOINT = `/home`;
+
+/** Github */
+
+/** Github authorize endpoint */
+export const GITHUB_AUTHORIZE_ENDPOINT =
+  process.env.REACT_APP_GITHUB_AUTHORIZE_ENDPOINT ||
+  `https://github.com/login/oauth/authorize`;
