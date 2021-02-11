@@ -1,18 +1,19 @@
 import React from 'react';
-import { Input } from 'antd';
+import { Avatar, Dropdown, Input, Menu } from 'antd';
 import './Header.scss';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
-import { getSessionUserInfo } from '../../store/ducks/session';
+import { getSessionUserInfo, resetSession } from '../../store/ducks/session';
 
 /** Interface to describe Header props */
 interface HeaderProps {
   userInfo: any;
+  resetSessionActionCreator: typeof resetSession;
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
-  const { userInfo } = props;
+  const { userInfo, resetSessionActionCreator } = props;
   const history = useHistory();
   const [searchText, setSearchText] = React.useState<string>('');
 
@@ -25,6 +26,10 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
     /** TODO: fix the search */
     history.push(`/search/${searchText}`);
     setSearchText('');
+  };
+
+  const handleSignOut = () => {
+    resetSessionActionCreator();
   };
 
   return (
@@ -46,7 +51,23 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
             />
           </div>
         </div>
-        <div>{userInfo?.name}</div>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item onClick={handleSignOut} key="0">
+                Sign Out
+              </Menu.Item>
+            </Menu>
+          }
+          placement="bottomRight"
+        >
+          <div className="Header-profile">
+            <div>{userInfo?.name}</div>
+            <Avatar src={userInfo.avatar_url}>
+              <div>{userInfo?.name?.slice(0, 2)}</div>
+            </Avatar>
+          </div>
+        </Dropdown>
       </div>
     </div>
   );
@@ -68,7 +89,9 @@ const mapStateToProps = (state: Partial<Store>): DispatchedStateProps => {
 };
 
 /** map props to actions */
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  resetSessionActionCreator: resetSession,
+};
 
 /** connect Header to the redux store */
 const ConnectedHeader = connect(mapStateToProps, mapDispatchToProps)(Header);
