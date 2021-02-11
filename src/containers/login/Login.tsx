@@ -3,8 +3,19 @@ import { Form, Card, Input, Button } from 'antd';
 import './Login.scss';
 import { GITHUB_CLIENT_ID } from '../../configs/constants';
 import { GITHUB_AUTHORIZE_ENDPOINT } from '../../configs/endpoints';
+import { Store } from 'redux';
+import { getSessionToken } from '../../store/ducks/session';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-const Login: React.FC = () => {
+/** interface to describe Login props*/
+interface LoginProps {
+  token: string;
+}
+
+const Login: React.FC<LoginProps> = (props: LoginProps) => {
+  const { token } = props;
+
   /**
    * OnFinish redirects to github oauth endpoint
    * @param {any} values - the form values
@@ -24,6 +35,7 @@ const Login: React.FC = () => {
   return (
     <div className="Login-body">
       <div className="Login-content">
+        {token !== '' && <Redirect to={'/'} />}
         <div className="Login-logo-container">
           <i className="fas fa-box-open"></i>
           <h4>Collectionist</h4>
@@ -68,4 +80,25 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+/** connect the component to the store */
+
+/** Interface to describe props from mapStateToProps */
+interface DispatchedStateProps {
+  token: string;
+}
+
+/** Map props to state  */
+const mapStateToProps = (state: Partial<Store>): DispatchedStateProps => {
+  const result = {
+    token: getSessionToken(state),
+  };
+  return result;
+};
+
+/** map props to actions */
+const mapDispatchToProps = {};
+
+/** connect Login to the redux store */
+const ConnectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default ConnectedLogin;

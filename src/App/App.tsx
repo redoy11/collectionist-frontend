@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Store } from 'redux';
-import Login from '../components/login/Login';
+import Login from '../containers/login/Login';
 import {
   GITHUB_USER_ENDPOINT,
   LOCAL_AUTHORIZE_ENDPOINT,
