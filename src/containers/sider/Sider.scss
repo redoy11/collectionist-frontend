@@ -2,7 +2,6 @@
   &-dropdown {
     &-title {
       color: black;
-      flex-grow: 1;
       font-weight: 600;
     }
 
@@ -10,8 +9,13 @@
       align-items: center;
       display: flex;
       justify-content: space-between;
-      margin: 25px 28px 0 32px;
-      padding: 5px 10px 0;
+      margin: 35px 28px 0 32px;
+      padding: 5px 5px 0;
+    }
+
+    &-body {
+      max-height: 300px;
+      overflow: auto;
     }
   }
 

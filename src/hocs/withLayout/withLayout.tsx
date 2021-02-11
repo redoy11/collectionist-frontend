@@ -1,7 +1,7 @@
 import React from 'react';
 import './withLayout.scss';
 import Header from '../../containers/header/Header';
-import Sider from '../../components/sider/Sider';
+import Sider from '../../containers/sider/Sider';
 
 /**
  * withLayout hoc method wraps the passing component with header and sider
