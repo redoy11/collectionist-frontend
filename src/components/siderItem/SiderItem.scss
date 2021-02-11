@@ -1,0 +1,20 @@
+.SiderItem {
+  &-container {
+    border-radius: 7px;
+    color: #666;
+    display: flex;
+    font-size: 0.9rem;
+    justify-content: space-between;
+    margin: 5px 30px;
+    padding: 5px 10px;
+
+    &:hover {
+      background: #fefeff;
+    }
+  }
+
+  &-active {
+    background: #fefeff;
+    color: black;
+  }
+}
