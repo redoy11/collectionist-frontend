@@ -7,6 +7,10 @@ import {
 import SeamlessImmutable from 'seamless-immutable';
 import { loadState, saveState } from '../services/localStorageSync';
 import session, { reducerName as sessionReducer } from './ducks/session';
+import collections, {
+  reducerName as collectionsReducer,
+} from './ducks/collections';
+import repos, { reducerName as reposReducer } from './ducks/collections';
 
 // reducers
 /** Initial reducers in the reducer registry */
@@ -14,6 +18,10 @@ const defaultReducers: any = {};
 
 /** Add session reducer to registry */
 defaultReducers[sessionReducer] = session;
+/** Add collections reducer to registry */
+defaultReducers[collectionsReducer] = collections;
+/** Add repos reducer to registry */
+defaultReducers[reposReducer] = repos;
 
 /** Create reducers from default reducers obj */
 const reducers = withReduxStateSync(
