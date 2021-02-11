@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import Login from '../components/login/Login';
 import {
   LOCAL_AUTHORIZE_ENDPOINT,
   LOCAL_HOME_ENDPOINT,
@@ -12,7 +13,9 @@ const App: React.FC = () => {
     <React.Fragment>
       <Switch>
         <Route path={LOCAL_AUTHORIZE_ENDPOINT}>Authorize</Route>
-        <Route path={LOCAL_LOGIN_ENDPOINT}>Login</Route>
+        <Route path={LOCAL_LOGIN_ENDPOINT}>
+          <Login />
+        </Route>
         <Route path={LOCAL_HOME_ENDPOINT}>Home</Route>
         <Route>
           <Redirect to={LOCAL_HOME_ENDPOINT} />
