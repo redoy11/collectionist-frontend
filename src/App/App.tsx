@@ -13,6 +13,8 @@ import ConnectedSessionAuthorize from '../containers/sessionAuthorize/SessionAut
 import { axioService, GET } from '../services/axioService';
 import { getSessionToken, setSessionUserInfo } from '../store/ducks/session';
 import './App.scss';
+import PrivateRoute from '../containers/privateRoute/PrivateRoute';
+import Home from '../components/home/Home';
 
 interface AppProps {
   token: string;
@@ -47,7 +49,7 @@ const App: React.FC<AppProps> = (props: AppProps) => {
         <Route path={LOCAL_LOGIN_ENDPOINT}>
           <Login />
         </Route>
-        <Route path={LOCAL_HOME_ENDPOINT}>Home</Route>
+        <PrivateRoute path={LOCAL_HOME_ENDPOINT} component={Home} />
         <Route>
           <Redirect to={LOCAL_HOME_ENDPOINT} />
         </Route>
