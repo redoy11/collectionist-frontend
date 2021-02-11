@@ -22,15 +22,20 @@ const SessionAuthorize = (props: SessionAuthorizeProps) => {
   /** destroys the session token */
   React.useEffect(() => {
     const fetchToken = async () => {
-      const code = (queryString.parse(location.search)['code'] as string) || '';
-      const response = await axioService(
-        POST,
-        SERVER_AUTHORIZE_ENDPOINT,
-        { code },
-        false
-      );
-      setSessionTokenActionCreator(response.data);
-      history.push('/');
+      try {
+        const code =
+          (queryString.parse(location.search)['code'] as string) || '';
+        const response = await axioService(
+          POST,
+          SERVER_AUTHORIZE_ENDPOINT,
+          { code },
+          false
+        );
+        setSessionTokenActionCreator(response.data);
+        history.push('/');
+      } catch (exception) {
+        console.error(exception);
+      }
     };
     fetchToken();
   }, []);
