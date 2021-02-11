@@ -1,0 +1,21 @@
+.Sider {
+  &-dropdown {
+    &-title {
+      color: black;
+      flex-grow: 1;
+      font-weight: 600;
+    }
+
+    &-title-container {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin: 25px 28px 0 32px;
+      padding: 5px 10px 0;
+    }
+  }
+
+  &-divider {
+    margin: 15px 0;
+  }
+}
