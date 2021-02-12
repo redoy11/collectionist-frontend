@@ -9,6 +9,7 @@ import {
   LOCAL_COLLECTIONS_ENDPOINT,
   LOCAL_HOME_ENDPOINT,
   LOCAL_LOGIN_ENDPOINT,
+  LOCAL_REPOS_ENDPOINT,
   SERVER_COLLECTIONS_ENDPOINT,
   SERVER_REPOS_ENDPOINT,
 } from '../configs/endpoints';
@@ -22,6 +23,8 @@ import { RepoObj, setRepos } from '../store/ducks/repos';
 import { CollectionObj, setCollections } from '../store/ducks/collections';
 import lodash from 'lodash';
 import CollectionsPage from '../components/collectionsPage/CollectionsPage';
+import ReposPage from '../components/reposPage/ReposPage';
+import CollectionPage from '../components/collectionPage/CollectionPage';
 
 interface AppProps {
   token: string;
@@ -80,7 +83,7 @@ const App: React.FC<AppProps> = (props: AppProps) => {
             response.data as any,
             (iterRepo: any): RepoObj => ({
               id: iterRepo.repo_id,
-              collectionId: iterRepo.collection_id,
+              collectionId: iterRepo.collection_id.toString(),
             })
           )
         );
@@ -120,12 +123,13 @@ const App: React.FC<AppProps> = (props: AppProps) => {
         <PrivateRoute path={LOCAL_HOME_ENDPOINT} component={Home} />
         <PrivateRoute
           path={LOCAL_COLLECTIONS_ENDPOINT + '/:id'}
-          component={CollectionsPage}
+          component={CollectionPage}
         />
         <PrivateRoute
           path={LOCAL_COLLECTIONS_ENDPOINT}
           component={CollectionsPage}
         />
+        <PrivateRoute path={LOCAL_REPOS_ENDPOINT} component={ReposPage} />
         <PrivateRoute path={LOCAL_COLLECTIONS_ENDPOINT} component={Home} />
         <Route>
           <Redirect to={LOCAL_HOME_ENDPOINT} />
