@@ -10,7 +10,7 @@ import session, { reducerName as sessionReducer } from './ducks/session';
 import collections, {
   reducerName as collectionsReducer,
 } from './ducks/collections';
-import repos, { reducerName as reposReducer } from './ducks/collections';
+import repos, { reducerName as reposReducer } from './ducks/repos';
 
 // reducers
 /** Initial reducers in the reducer registry */
