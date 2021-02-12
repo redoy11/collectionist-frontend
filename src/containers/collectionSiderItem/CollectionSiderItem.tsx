@@ -1,4 +1,5 @@
 import { Button, Dropdown, Menu, Modal, Tooltip } from 'antd';
+import lodash from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
@@ -13,7 +14,7 @@ import {
   deleteCollection,
   setCollection,
 } from '../../store/ducks/collections';
-import { deleteRepoOnCollection } from '../../store/ducks/repos';
+import { deleteRepoOnCollection, getRepos } from '../../store/ducks/repos';
 import { getSessionUserInfo } from '../../store/ducks/session';
 import ConnectedAddCollection from '../addCollection/AddCollection';
 import './CollectionSiderItem.scss';
@@ -22,6 +23,7 @@ import './CollectionSiderItem.scss';
 interface CollectionSiderItemProps {
   userInfo: any;
   collectionInfo: CollectionObj;
+  repoCount: number;
   setCollectionActionCreator: typeof setCollection;
   deleteCollectionActionCreator: typeof deleteCollection;
   deleteRepoOnCollectionActionCreator: typeof deleteRepoOnCollection;
@@ -35,6 +37,7 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
     userInfo,
     deleteCollectionActionCreator,
     deleteRepoOnCollectionActionCreator,
+    repoCount,
   } = props;
 
   const { confirm } = Modal;
@@ -82,7 +85,7 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
     <div className="CollectionSiderItem-container">
       <SiderItem
         title={collectionInfo.title}
-        count="0"
+        count={repoCount.toString()}
         location={LOCAL_COLLECTIONS_ENDPOINT + '/' + collectionInfo.id}
       />
       <Dropdown
@@ -130,12 +133,19 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
 /** Interface to describe props from mapStateToProps */
 interface DispatchedStateProps {
   userInfo: any;
+  repoCount: number;
 }
 
 /** Map props to state  */
-const mapStateToProps = (state: Partial<Store>): DispatchedStateProps => {
+const mapStateToProps = (
+  state: Partial<Store>,
+  parentProps: any
+): DispatchedStateProps => {
   const result = {
     userInfo: getSessionUserInfo(state),
+    repoCount: lodash.filter(getRepos(state), {
+      collectionId: parentProps.collectionInfo.id,
+    }).length,
   };
   return result;
 };
