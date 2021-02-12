@@ -1,0 +1,36 @@
+.CollectionSiderItem {
+  &-dropdown {
+    border-radius: 5px;
+    min-width: 100px;
+
+    i {
+      margin-right: 20px;
+    }
+  }
+
+  &-container {
+    position: relative;
+
+    .ant-btn {
+      color: gray;
+      opacity: 0;
+      position: absolute;
+      right: 12px;
+      top: 3px;
+
+      i {
+        font-size: 10px;
+      }
+    }
+
+    &:hover {
+      .ant-btn {
+        opacity: 1;
+      }
+    }
+
+    .ant-dropdown-open {
+      opacity: 1;
+    }
+  }
+}
