@@ -22,6 +22,8 @@ export const UPDATE_COLLECTIONS =
   'collectionist/reducer/collections/UPDATE_COLLECTIONS';
 export const SET_COLLECTION =
   'collectionist/reducer/collections/SET_COLLECTION';
+export const DELETE_COLLECTION =
+  'collectionist/reducer/collections/DELETE_COLLECTION';
 
 /** interface for SET_COLLECTIONS action */
 export interface SetCollectionsAction extends AnyAction {
@@ -42,11 +44,18 @@ export interface SetCollectionAction extends AnyAction {
   type: typeof SET_COLLECTION;
 }
 
+/** interface for DELETE_COLLECTION action */
+export interface DeleteCollectionAction extends AnyAction {
+  id: string;
+  type: typeof DELETE_COLLECTION;
+}
+
 /** Create type for collection reducer actions */
 export type CollectionsActionTypes =
   | SetCollectionsAction
   | UpdateCollectionsAction
   | SetCollectionAction
+  | DeleteCollectionAction
   | AnyAction;
 
 // action creators
@@ -77,7 +86,7 @@ export const updateCollections = (
   };
 };
 
-/** set collections action creator
+/** set collection action creator
  * @param {CollectionObj} collection - a collection object
  * @returns {SetCollectionAction} - an action to set collection in store
  */
@@ -86,6 +95,15 @@ export const setCollection = (
 ): SetCollectionAction => ({
   collection,
   type: SET_COLLECTION,
+});
+
+/** delete collection action creator
+ * @param {id} collection - an id of a collection
+ * @returns {DeleteCollectionAction} - an action to delete collection in store based on id
+ */
+export const deleteCollection = (id: string): DeleteCollectionAction => ({
+  id,
+  type: DELETE_COLLECTION,
 });
 
 // the reducer
@@ -123,6 +141,14 @@ export default function reducer(
             iterateCollection.id !== action.collection.id
         ),
         action.collection,
+      ]);
+    case DELETE_COLLECTION:
+      return SeamlessImmutable([
+        ...(lodash.filter(
+          state.asMutable({ deep: true }),
+          (iterateCollection: CollectionObj) =>
+            iterateCollection.id !== action.id
+        ) as any),
       ]);
     default:
       return state;
