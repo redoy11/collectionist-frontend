@@ -6,6 +6,7 @@ import Login from '../containers/login/Login';
 import {
   GITHUB_USER_ENDPOINT,
   LOCAL_AUTHORIZE_ENDPOINT,
+  LOCAL_COLLECTIONS_ENDPOINT,
   LOCAL_HOME_ENDPOINT,
   LOCAL_LOGIN_ENDPOINT,
   SERVER_COLLECTIONS_ENDPOINT,
@@ -20,6 +21,7 @@ import Home from '../components/home/Home';
 import { RepoObj, setRepos } from '../store/ducks/repos';
 import { CollectionObj, setCollections } from '../store/ducks/collections';
 import lodash from 'lodash';
+import CollectionsPage from '../components/collectionsPage/CollectionsPage';
 
 interface AppProps {
   token: string;
@@ -116,6 +118,15 @@ const App: React.FC<AppProps> = (props: AppProps) => {
           <Login />
         </Route>
         <PrivateRoute path={LOCAL_HOME_ENDPOINT} component={Home} />
+        <PrivateRoute
+          path={LOCAL_COLLECTIONS_ENDPOINT + '/:id'}
+          component={CollectionsPage}
+        />
+        <PrivateRoute
+          path={LOCAL_COLLECTIONS_ENDPOINT}
+          component={CollectionsPage}
+        />
+        <PrivateRoute path={LOCAL_COLLECTIONS_ENDPOINT} component={Home} />
         <Route>
           <Redirect to={LOCAL_HOME_ENDPOINT} />
         </Route>
