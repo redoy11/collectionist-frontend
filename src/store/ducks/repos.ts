@@ -17,6 +17,8 @@ export const SET_REPOS = 'collectionist/reducer/repos/SET_REPOS';
 export const UPDATE_REPOS = 'collectionist/reducer/repos/UPDATE_REPOS';
 export const SET_REPO = 'collectionist/reducer/repos/SET_REPO';
 export const DELETE_REPO = 'collectionist/reducer/repos/DELETE_REPO';
+export const DELETE_REPO_ON_COLLECTION =
+  'collectionist/reducer/repos/DELETE_REPO_ON_COLLECTION';
 
 /** interface for SET_REPOS action */
 export interface SetReposAction extends AnyAction {
@@ -43,12 +45,19 @@ export interface DeleteRepoAction extends AnyAction {
   type: typeof DELETE_REPO;
 }
 
+/** interface for DELETE_REPO_ON_COLLECTION action */
+export interface DeleteRepoOnCollectionAction extends AnyAction {
+  collection_id: string;
+  type: typeof DELETE_REPO_ON_COLLECTION;
+}
+
 /** Create type for repo reducer actions */
 export type ReposActionTypes =
   | SetReposAction
   | UpdateReposAction
   | SetRepoAction
   | DeleteRepoAction
+  | DeleteRepoOnCollectionAction
   | AnyAction;
 
 // action creators
@@ -93,6 +102,17 @@ export const deleteRepo = (repo_id: string): DeleteRepoAction => ({
   type: DELETE_REPO,
 });
 
+/** delete repo on collection action creator
+ * @param {string} collection_id - a repo id
+ * @returns {deleteRepoAction} - an action to delete repo in store based on collection id
+ */
+export const deleteRepoOnCollection = (
+  collection_id: string
+): DeleteRepoOnCollectionAction => ({
+  collection_id,
+  type: DELETE_REPO_ON_COLLECTION,
+});
+
 // the reducer
 
 /** interface for repos state in redux store */
@@ -133,6 +153,14 @@ export default function reducer(
         ...(lodash.filter(
           state.asMutable({ deep: true }),
           (iterateRepo: RepoObj) => iterateRepo.id !== action.repo_id
+        ) as any),
+      ]);
+    case DELETE_REPO_ON_COLLECTION:
+      return SeamlessImmutable([
+        ...(lodash.filter(
+          state.asMutable({ deep: true }),
+          (iterateRepo: RepoObj) =>
+            iterateRepo.collectionId !== action.collection_id
         ) as any),
       ]);
     default:
