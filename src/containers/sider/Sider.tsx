@@ -1,4 +1,5 @@
 import { Button, Divider, Tooltip } from 'antd';
+import lodash from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
@@ -62,12 +63,14 @@ const Sider: React.FC<SiderProps> = (props: SiderProps) => {
       </div>
       <Divider className="Sider-divider" />
       <div className="Sider-dropdown-body">
-        {collections.map((iterCollection: CollectionObj) => (
-          <CollectionSiderItem
-            key={iterCollection.id}
-            collectionInfo={iterCollection}
-          />
-        ))}
+        {lodash
+          .orderBy(collections, ['createdAt'], ['asc'])
+          .map((iterCollection: CollectionObj) => (
+            <CollectionSiderItem
+              key={iterCollection.id}
+              collectionInfo={iterCollection}
+            />
+          ))}
       </div>
       <ConnectedAddCollection visible={visible} closeHandler={closeHandler} />
     </React.Fragment>
