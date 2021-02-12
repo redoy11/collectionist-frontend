@@ -1,0 +1,13 @@
+.CollectionsPage {
+  &-container {
+    min-height: 700px;
+    padding-bottom: 40px;
+    width: 750px;
+  }
+
+  &-title {
+    color: var(--theme-primary-main);
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+}
