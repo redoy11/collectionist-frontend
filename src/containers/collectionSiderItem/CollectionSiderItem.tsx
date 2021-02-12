@@ -3,7 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import SiderItem from '../../components/siderItem/SiderItem';
-import { SERVER_COLLECTIONS_ENDPOINT } from '../../configs/endpoints';
+import {
+  LOCAL_COLLECTIONS_ENDPOINT,
+  SERVER_COLLECTIONS_ENDPOINT,
+} from '../../configs/endpoints';
 import { axioService, DELETE } from '../../services/axioService';
 import {
   CollectionObj,
@@ -77,7 +80,11 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
 
   return (
     <div className="CollectionSiderItem-container">
-      <SiderItem title={collectionInfo.title} count="0" location="" />
+      <SiderItem
+        title={collectionInfo.title}
+        count="0"
+        location={LOCAL_COLLECTIONS_ENDPOINT + '/' + collectionInfo.id}
+      />
       <Dropdown
         overlay={
           <Menu className="CollectionSiderItem-dropdown">
