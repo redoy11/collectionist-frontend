@@ -3,6 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import SiderItem from '../../components/siderItem/SiderItem';
+import {
+  LOCAL_COLLECTIONS_ENDPOINT,
+  LOCAL_HOME_ENDPOINT,
+  LOCAL_REPOS_ENDPOINT,
+} from '../../configs/endpoints';
 import { CollectionObj, getCollections } from '../../store/ducks/collections';
 import { getSessionUserInfo } from '../../store/ducks/session';
 import ConnectedAddCollection from '../addCollection/AddCollection';
@@ -31,16 +36,16 @@ const Sider: React.FC<SiderProps> = (props: SiderProps) => {
   return (
     <React.Fragment>
       <div>
-        <SiderItem title="Home" count="" location="/home" />
+        <SiderItem title="Home" count="" location={LOCAL_HOME_ENDPOINT} />
         <SiderItem
           title="Collections"
           count={collections.length.toString()}
-          location=""
+          location={LOCAL_COLLECTIONS_ENDPOINT}
         />
         <SiderItem
           title="Repositories"
           count={userInfo?.public_repos || '0'}
-          location=""
+          location={LOCAL_REPOS_ENDPOINT}
         />
       </div>
       <div className="Sider-dropdown-title-container">
