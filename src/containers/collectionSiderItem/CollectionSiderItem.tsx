@@ -1,23 +1,40 @@
-import { Button, Dropdown, Menu, Tooltip } from 'antd';
+import { Button, Dropdown, Menu, Modal, Tooltip } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import SiderItem from '../../components/siderItem/SiderItem';
-import { CollectionObj, setCollection } from '../../store/ducks/collections';
+import { SERVER_COLLECTIONS_ENDPOINT } from '../../configs/endpoints';
+import { axioService, DELETE } from '../../services/axioService';
+import {
+  CollectionObj,
+  deleteCollection,
+  setCollection,
+} from '../../store/ducks/collections';
+import { deleteRepoOnCollection } from '../../store/ducks/repos';
 import { getSessionUserInfo } from '../../store/ducks/session';
 import ConnectedAddCollection from '../addCollection/AddCollection';
 import './CollectionSiderItem.scss';
 
 /** interface to describe collectionItem props */
 interface CollectionSiderItemProps {
+  userInfo: any;
   collectionInfo: CollectionObj;
   setCollectionActionCreator: typeof setCollection;
+  deleteCollectionActionCreator: typeof deleteCollection;
+  deleteRepoOnCollectionActionCreator: typeof deleteRepoOnCollection;
 }
 
 const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
   props: CollectionSiderItemProps
 ) => {
-  const { collectionInfo } = props;
+  const {
+    collectionInfo,
+    userInfo,
+    deleteCollectionActionCreator,
+    deleteRepoOnCollectionActionCreator,
+  } = props;
+
+  const { confirm } = Modal;
 
   /** manages the visibility of edit modal */
   const [visible, setVisible] = React.useState<boolean>(false);
@@ -30,6 +47,32 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
   /** handles the collection edit modal close request */
   const modalCloseHandler = () => {
     setVisible(false);
+  };
+
+  /** handles the delete request of collection */
+  const deleteRequest = async () => {
+    await axioService(
+      DELETE,
+      `${SERVER_COLLECTIONS_ENDPOINT}/${userInfo.id}/${collectionInfo.id}`,
+      {},
+      true
+    );
+    deleteCollectionActionCreator(collectionInfo.id);
+    deleteRepoOnCollectionActionCreator(collectionInfo.id);
+  };
+
+  /** confirms the delete request */
+  const showDeleteConfirm = () => {
+    confirm({
+      title: 'Are you sure delete this collection?',
+      icon: <i className="fas fa-delete" />,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        deleteRequest();
+      },
+    });
   };
 
   return (
@@ -45,7 +88,11 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
             >
               Edit
             </Menu.Item>
-            <Menu.Item key="1" icon={<i className="fas fa-trash" />}>
+            <Menu.Item
+              onClick={showDeleteConfirm}
+              key="1"
+              icon={<i className="fas fa-trash" />}
+            >
               Delete
             </Menu.Item>
           </Menu>
@@ -87,7 +134,11 @@ const mapStateToProps = (state: Partial<Store>): DispatchedStateProps => {
 };
 
 /** map props to actions */
-const mapDispatchToProps = { setCollectionActionCreator: setCollection };
+const mapDispatchToProps = {
+  setCollectionActionCreator: setCollection,
+  deleteCollectionActionCreator: deleteCollection,
+  deleteRepoOnCollectionActionCreator: deleteRepoOnCollection,
+};
 
 /** connect CollectionSiderItem to the redux store */
 const ConnectedCollectionSiderItem = connect(
