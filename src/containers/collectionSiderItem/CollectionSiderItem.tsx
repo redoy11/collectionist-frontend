@@ -5,6 +5,7 @@ import { Store } from 'redux';
 import SiderItem from '../../components/siderItem/SiderItem';
 import { CollectionObj, setCollection } from '../../store/ducks/collections';
 import { getSessionUserInfo } from '../../store/ducks/session';
+import ConnectedAddCollection from '../addCollection/AddCollection';
 import './CollectionSiderItem.scss';
 
 /** interface to describe collectionItem props */
@@ -17,13 +18,31 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
   props: CollectionSiderItemProps
 ) => {
   const { collectionInfo } = props;
+
+  /** manages the visibility of edit modal */
+  const [visible, setVisible] = React.useState<boolean>(false);
+
+  /** handles the collection edit request */
+  const editHandler = () => {
+    setVisible(true);
+  };
+
+  /** handles the collection edit modal close request */
+  const modalCloseHandler = () => {
+    setVisible(false);
+  };
+
   return (
     <div className="CollectionSiderItem-container">
       <SiderItem title={collectionInfo.title} count="0" location="" />
       <Dropdown
         overlay={
           <Menu className="CollectionSiderItem-dropdown">
-            <Menu.Item key="0" icon={<i className="fas fa-edit" />}>
+            <Menu.Item
+              onClick={editHandler}
+              key="0"
+              icon={<i className="fas fa-edit" />}
+            >
               Edit
             </Menu.Item>
             <Menu.Item key="1" icon={<i className="fas fa-trash" />}>
@@ -43,6 +62,11 @@ const CollectionSiderItem: React.FC<CollectionSiderItemProps> = (
           />
         </Tooltip>
       </Dropdown>
+      <ConnectedAddCollection
+        visible={visible}
+        closeHandler={modalCloseHandler}
+        collectionId={collectionInfo.id}
+      />
     </div>
   );
 };
