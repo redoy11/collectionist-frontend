@@ -8,6 +8,8 @@ import {
   LOCAL_AUTHORIZE_ENDPOINT,
   LOCAL_HOME_ENDPOINT,
   LOCAL_LOGIN_ENDPOINT,
+  SERVER_COLLECTIONS_ENDPOINT,
+  SERVER_REPOS_ENDPOINT,
 } from '../configs/endpoints';
 import ConnectedSessionAuthorize from '../containers/sessionAuthorize/SessionAuthorize';
 import { axioService, GET } from '../services/axioService';
@@ -15,20 +17,84 @@ import { getSessionToken, setSessionUserInfo } from '../store/ducks/session';
 import './App.scss';
 import PrivateRoute from '../containers/privateRoute/PrivateRoute';
 import Home from '../components/home/Home';
+import { RepoObj, setRepos } from '../store/ducks/repos';
+import { CollectionObj, setCollections } from '../store/ducks/collections';
+import lodash from 'lodash';
 
 interface AppProps {
   token: string;
   setSessionUserInfoActionCreator: typeof setSessionUserInfo;
+  setCollectionsActionCreator: typeof setCollections;
+  setReposActionCreator: typeof setRepos;
 }
 
 const App: React.FC<AppProps> = (props: AppProps) => {
-  const { token, setSessionUserInfoActionCreator } = props;
+  const {
+    token,
+    setSessionUserInfoActionCreator,
+    setCollectionsActionCreator,
+    setReposActionCreator,
+  } = props;
 
   React.useEffect(() => {
+    /** fetch all collections associated with the user */
+    const fetchCollections = async (userId: string) => {
+      try {
+        const response = await axioService(
+          GET,
+          `${SERVER_COLLECTIONS_ENDPOINT}/${userId}`,
+          {},
+          true
+        );
+        setCollectionsActionCreator(
+          lodash.map(
+            response.data as any,
+            (iterCollection: any): CollectionObj => ({
+              id: iterCollection.id.toString(),
+              title: iterCollection.title,
+              type: '',
+              createdAt: iterCollection.created_at,
+              updatedAt: iterCollection.updated_at,
+            })
+          )
+        );
+      } catch (exception) {
+        /** console error the exception */
+        console.error(exception);
+      }
+    };
+
+    /** fetch all repos associated with the user */
+    const fetchRepos = async (userId: string) => {
+      try {
+        const response = await axioService(
+          GET,
+          `${SERVER_REPOS_ENDPOINT}/${userId}`,
+          {},
+          true
+        );
+        setReposActionCreator(
+          lodash.map(
+            response.data as any,
+            (iterRepo: any): RepoObj => ({
+              id: iterRepo.repo_id,
+              collectionId: iterRepo.collection_id,
+            })
+          )
+        );
+      } catch (exception) {
+        /** console error the exception */
+        console.error(exception);
+      }
+    };
+
+    /** fetch the associated user profile */
     const fetchProfile = async () => {
       try {
         const response = await axioService(GET, GITHUB_USER_ENDPOINT, {}, true);
         setSessionUserInfoActionCreator(response.data);
+        fetchCollections(response.data.id);
+        fetchRepos(response.data.id);
       } catch (exception) {
         /** console error the exception */
         console.error(exception);
@@ -74,6 +140,8 @@ const mapStateToProps = (state: Partial<Store>): DispatchedStateProps => {
 /** map props to actions */
 const mapDispatchToProps = {
   setSessionUserInfoActionCreator: setSessionUserInfo,
+  setCollectionsActionCreator: setCollections,
+  setReposActionCreator: setRepos,
 };
 
 /** connect App to the redux store */
