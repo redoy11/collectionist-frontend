@@ -16,6 +16,7 @@ export const reducerName = 'repos';
 export const SET_REPOS = 'collectionist/reducer/repos/SET_REPOS';
 export const UPDATE_REPOS = 'collectionist/reducer/repos/UPDATE_REPOS';
 export const SET_REPO = 'collectionist/reducer/repos/SET_REPO';
+export const DELETE_REPO = 'collectionist/reducer/repos/DELETE_REPO';
 
 /** interface for SET_REPOS action */
 export interface SetReposAction extends AnyAction {
@@ -36,11 +37,18 @@ export interface SetRepoAction extends AnyAction {
   type: typeof SET_REPO;
 }
 
+/** interface for DELETE_REPO action */
+export interface DeleteRepoAction extends AnyAction {
+  repo_id: string;
+  type: typeof DELETE_REPO;
+}
+
 /** Create type for repo reducer actions */
 export type ReposActionTypes =
   | SetReposAction
   | UpdateReposAction
   | SetRepoAction
+  | DeleteRepoAction
   | AnyAction;
 
 // action creators
@@ -74,6 +82,15 @@ export const updateRepos = (repos: RepoObj[]): UpdateReposAction => {
 export const setRepo = (repo: RepoObj): SetRepoAction => ({
   repo,
   type: SET_REPO,
+});
+
+/** delete repo action creator
+ * @param {string} repo_id - a repo id
+ * @returns {deleteRepoAction} - an action to delete repo in store
+ */
+export const deleteRepo = (repo_id: string): DeleteRepoAction => ({
+  repo_id,
+  type: DELETE_REPO,
 });
 
 // the reducer
@@ -110,6 +127,13 @@ export default function reducer(
           (iterateRepo: RepoObj) => iterateRepo.id !== action.repo.id
         ),
         action.repo,
+      ]);
+    case DELETE_REPO:
+      return SeamlessImmutable([
+        ...(lodash.filter(
+          state.asMutable({ deep: true }),
+          (iterateRepo: RepoObj) => iterateRepo.id !== action.repo_id
+        ) as any),
       ]);
     default:
       return state;
