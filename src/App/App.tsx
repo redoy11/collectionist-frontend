@@ -10,6 +10,7 @@ import {
   LOCAL_HOME_ENDPOINT,
   LOCAL_LOGIN_ENDPOINT,
   LOCAL_REPOS_ENDPOINT,
+  LOCAL_SEARCH_ENDPOINT,
   SERVER_COLLECTIONS_ENDPOINT,
   SERVER_REPOS_ENDPOINT,
 } from '../configs/endpoints';
@@ -25,6 +26,7 @@ import lodash from 'lodash';
 import CollectionsPage from '../components/collectionsPage/CollectionsPage';
 import ReposPage from '../components/reposPage/ReposPage';
 import CollectionPage from '../components/collectionPage/CollectionPage';
+import SearchPage from '../components/searchPage/SearchPage';
 
 interface AppProps {
   token: string;
@@ -131,6 +133,7 @@ const App: React.FC<AppProps> = (props: AppProps) => {
         />
         <PrivateRoute path={LOCAL_REPOS_ENDPOINT} component={ReposPage} />
         <PrivateRoute path={LOCAL_COLLECTIONS_ENDPOINT} component={Home} />
+        <PrivateRoute path={LOCAL_SEARCH_ENDPOINT} component={SearchPage} />
         <Route>
           <Redirect to={LOCAL_HOME_ENDPOINT} />
         </Route>
