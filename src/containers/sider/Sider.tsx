@@ -6,6 +6,7 @@ import SiderItem from '../../components/siderItem/SiderItem';
 import { CollectionObj, getCollections } from '../../store/ducks/collections';
 import { getSessionUserInfo } from '../../store/ducks/session';
 import ConnectedAddCollection from '../addCollection/AddCollection';
+import CollectionSiderItem from '../collectionSiderItem/CollectionSiderItem';
 import './Sider.scss';
 
 /** interface to describe sider props */
@@ -57,11 +58,9 @@ const Sider: React.FC<SiderProps> = (props: SiderProps) => {
       <Divider className="Sider-divider" />
       <div className="Sider-dropdown-body">
         {collections.map((iterCollection: CollectionObj) => (
-          <SiderItem
+          <CollectionSiderItem
             key={iterCollection.id}
-            title={iterCollection.title}
-            count="0"
-            location=""
+            collectionInfo={iterCollection}
           />
         ))}
       </div>
