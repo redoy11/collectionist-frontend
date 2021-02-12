@@ -1,4 +1,5 @@
 import { List } from 'antd';
+import lodash from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
@@ -16,7 +17,7 @@ const CollectionList: React.FC<CollectionList> = (props: CollectionList) => {
   return (
     <List
       itemLayout="horizontal"
-      dataSource={collections}
+      dataSource={lodash.orderBy(collections, ['createdAt'], ['asc'])}
       renderItem={(item) => (
         <ConnectedCollectionListItem collectionInfo={item} />
       )}
