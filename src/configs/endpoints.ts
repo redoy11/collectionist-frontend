@@ -14,6 +14,12 @@ export const LOCAL_AUTHORIZE_ENDPOINT = `/${LOCAL_SECRET_KEY}/authorize`;
 /** local home page */
 export const LOCAL_HOME_ENDPOINT = `/home`;
 
+/** local collections page */
+export const LOCAL_COLLECTIONS_ENDPOINT = `/collections`;
+
+/** local repos page */
+export const LOCAL_REPOS_ENDPOINT = `/repos`;
+
 /** Server */
 
 /** server endpoint */
