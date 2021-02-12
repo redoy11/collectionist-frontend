@@ -1,0 +1,20 @@
+.RepoListItem {
+  &-container {
+    i {
+      color: gray;
+    }
+
+    .ant-select-selector {
+      background: var(--theme-primary-bg-light) !important;
+      border-radius: 5px !important;
+      color: gray;
+      font-size: 0.8rem !important;
+    }
+
+    .ant-select-focused {
+      .ant-select-selector {
+        background: white !important;
+      }
+    }
+  }
+}
