@@ -20,6 +20,9 @@ export const LOCAL_COLLECTIONS_ENDPOINT = `/collections`;
 /** local repos page */
 export const LOCAL_REPOS_ENDPOINT = `/repos`;
 
+/** local search page */
+export const LOCAL_SEARCH_ENDPOINT = `/search/:id`;
+
 /** Server */
 
 /** server endpoint */
