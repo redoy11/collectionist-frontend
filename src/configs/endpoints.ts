@@ -25,6 +25,15 @@ export const SERVER_AUTHORIZE_ENDPOINT =
   process.env.REACT_APP_SERVER_AUTHORIZE_ENDPOINT ||
   `${SERVER_ENDPOINT}/authorize`;
 
+/** server collections endpoint */
+export const SERVER_COLLECTIONS_ENDPOINT =
+  process.env.REACT_APP_SERVER_COLLECTIONS_ENDPOINT ||
+  `${SERVER_ENDPOINT}/collections`;
+
+/** server repos endpoint */
+export const SERVER_REPOS_ENDPOINT =
+  process.env.REACT_APP_SERVER_REPOS_ENDPOINT || `${SERVER_ENDPOINT}/repos`;
+
 /** Github */
 
 /** Github authorize endpoint */
